@@ -1,0 +1,30 @@
+
+
+ <input id= "Client" class="buttons" type="button" name="client" value="Clients">
+ <br></br>
+ <input id= "Product" class="buttons" type="button" name="products"  value="Products">
+ <br></br>
+ <input id= "Bill" class="buttons"  type="button" name="bills" value="Bills">
+ <br></br>
+ <input id="Purchase" class="buttons"  type="button" name="shop" value="Purchase">
+
+<script type="text/javascript">
+
+const buttons =document.querySelectorAll('.buttons')
+console.log(buttons)
+buttons.forEach(addEvent)
+function addEvent(element) {
+  element.addEventListener('click', event=>{
+    window.location="http://localhost:3001/"+element.name
+  })
+}
+/*
+for (var i = 0; i < buttons.length; i++) {
+   const dir= buttons[i].name
+  buttons[i].addEventListener('click', event=>{
+   console.log(dir)
+    window.location="http://localhost:3001/"+dir
+  })*/
+
+
+</script>

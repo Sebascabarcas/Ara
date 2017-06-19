@@ -1,0 +1,39 @@
+<script type="text/javascript">
+let clientList = document.createElement('ul')
+//let btt = document.createElement('button')
+//let textb = document.createTextNode("BUY")
+//btt.setAttribute("id","bton")
+//btt.appendChild(textb)
+fetch("/ara/client", {
+  method: 'GET'
+
+}).then(res => res.json())
+.then(data => {
+  console.log(data.client);
+  //localStorage.setItem("clients",allclients)
+  data.client.map(client =>{
+    let name = document.createTextNode(client.name)
+    let space = document.createElement('p')
+    let textspace = document.createTextNode("Ced: "+client.ced)
+    let elem = document.createElement('li')
+    space.appendChild(textspace)
+    elem.appendChild(name)
+  //  document.body.appendChild(space)
+    clientList.appendChild(elem)
+    clientList.appendChild(space)
+  })
+  document.body.appendChild(clientList)
+  //document.body.insertBefore(clientList, btt)
+
+  //console.log(data.client.length);
+/*  const List = document.getElementById("list")
+  console.log(List.length)
+  console.log(List.childNodes[0])
+  for (var i = List.length-1; i >= 0; i--) {
+    let space = document.createElement('input')
+    space.setAttribute("type","value")
+    space.setAttribute("value", "¿How many?")
+    List.insertBefore(space,List.childNodes[i])
+  }*/
+})
+</script>

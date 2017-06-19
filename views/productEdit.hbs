@@ -1,0 +1,82 @@
+<form id="pedit">
+    <input id="press" type="submit"  value="Press">
+</form>
+<script type="text/javascript">
+  const pedit = document.querySelector("#pedit")
+  const Url = document.baseURI.split("/")
+  const productCod = Url[4]
+
+  //const sendbtt = document.querySelector("#submit")
+  const pressbtt = document.querySelector("#press")
+
+  pressbtt.addEventListener("click", event=>{
+    event.preventDefault()
+    fetch("/ara/product/"+productCod, {
+      method: 'GET',
+
+    }).then(res => res.json())
+    .then(data => {
+      //console.log(data.product[0].cod);
+      let icod = document.createElement("input")
+      icod.setAttribute("id", "cod")
+      icod.setAttribute("type","text")
+      icod.setAttribute("require","true")
+      icod.setAttribute("value",data.product[0].cod)
+      let iname = document.createElement("input")
+      iname.setAttribute("id", "name")
+      iname.setAttribute("type","text")
+      iname.setAttribute("require","true")
+      iname.setAttribute("value",data.product[0].name)
+      let iprice = document.createElement("input")
+      iprice.setAttribute("id", "price")
+      iprice.setAttribute("type","text")
+      iprice.setAttribute("require","true")
+      iprice.setAttribute("value",data.product[0].price)
+      let isubmit = document.createElement("input")
+        isubmit.setAttribute("type", "submit")
+        isubmit.setAttribute("value", "Submit")
+        pedit.appendChild(isubmit)
+      pedit.insertBefore(icod,isubmit)
+      pedit.insertBefore(iname,isubmit)
+      pedit.insertBefore(iprice,isubmit)
+      pressbtt.parentNode.removeChild(pressbtt)
+      isubmit.addEventListener("click", event=>{
+          event.preventDefault()
+        fetch("/ara/product/"+ productCod, {
+          method: 'PUT',
+          body: JSON.stringify({
+            cod: parseInt(document.querySelector("#cod").value),
+            name: document.querySelector("#name").value,
+            price: parseInt(document.querySelector("#price").value)
+
+          }),
+          headers:{
+            "Content-Type": "application/json"
+          },
+        }).then(res => res.json())
+        .then((json) => window.location="http://localhost:3001/products")
+      })
+    })
+
+  })
+  //const formLogin = document.querySelector('#put')
+  //const formData = new FormData(formLogin)
+  /*sendbtt.addEventListener("click", event=>{
+      event.preventDefault()
+    fetch("/ara/product/"+ productCod, {
+      method: 'PUT',
+      body: JSON.stringify({
+        cod: parseInt(document.querySelector("#cod").value),
+        name: document.querySelector("#name").value,
+        price: parseInt(document.querySelector("#price").value)
+
+      }),
+      headers:{
+        "Content-Type": "application/json"
+      },
+    }).then(res => res.json())
+    .then((json) => window.location="http://localhost:3001/products")
+  })*/
+
+
+</script>

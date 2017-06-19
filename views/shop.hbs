@@ -1,0 +1,72 @@
+<script type="text/javascript">
+let productList = document.createElement('ul')
+let btt = document.createElement('button')
+let textb = document.createTextNode("BUY")
+btt.setAttribute("id","bton")
+btt.appendChild(textb)
+fetch("/ara/product", {
+  method: 'GET'
+
+}).then(res => res.json())
+.then(data => {
+
+  console.log(data.product);
+  //localStorage.setItem("products",allproducts)
+  data.product.map(product =>{
+    let name = document.createTextNode(product.name)
+    let elem = document.createElement('li')
+    let space = document.createElement('input')
+    space.setAttribute("type","value")
+    space.setAttribute("placeHolder", "¿How many?")
+  //  space.setAttribute("value", "0")
+    space.setAttribute("id",""+product.name)
+    elem.appendChild(name)
+  //  document.body.appendChild(space)
+    productList.appendChild(elem)
+    productList.appendChild(space)
+  })
+  document.body.insertBefore(productList, btt)
+
+  console.log(data.product.length);
+/*  const List = document.getElementById("list")
+  console.log(List.length)
+  console.log(List.childNodes[0])
+  for (var i = List.length-1; i >= 0; i--) {
+    let space = document.createElement('input')
+    space.setAttribute("type","value")
+    space.setAttribute("value", "¿How many?")
+    List.insertBefore(space,List.childNodes[i])
+  }*/
+})
+document.body.appendChild(btt)
+document.querySelector("#bton").addEventListener("click", event=>{
+  fetch("/ara/product", {
+    method: 'GET'
+
+  }).then(res => res.json())
+  .then(data => {
+    const verif = false
+    const allproducts=data.product
+    const totalp = new Array()
+    //const val =document.querySelector("#"+allproducts[0].name).value
+  //  const totalp = 0
+    //console.log(typeof totalp);
+
+    for (var i = 0; i < allproducts.length; i++) {
+      const val =document.querySelector("#"+allproducts[i].name).value
+      if (!val) {
+        totalp.push(0)
+
+      }else{
+       totalp.push(parseInt(val))}
+    // if (document.querySelector("#"+allproducts[i].name)) {
+    //   totalp =parseInt(document.querySelector("#"+allproducts[i].name).value)
+
+    // }
+    }
+    console.log(totalp);
+  })
+})
+
+//console.log(allproducts.length)
+</script>

@@ -1,0 +1,55 @@
+<button id="newproduct" type="button" name="button">New product</button>
+<script type="text/javascript">
+const pbutton = document.querySelector("#newproduct")
+pbutton.addEventListener("click", event =>{
+  window.location="http://localhost:3001/products/new"
+})
+
+let productList = document.createElement('ul')
+fetch("/ara/product", {
+  method: 'GET'
+
+}).then(res => res.json())
+.then(data => {
+  data.product.map(product =>{
+    let name = document.createTextNode(product.name)
+    let elem = document.createElement('li')
+    let tedit = document.createTextNode("Edit")
+    let edit = document.createElement('button')
+    let terase = document.createTextNode("Erase")
+    let erase = document.createElement('button')
+    elem.appendChild(name)
+    edit.setAttribute("class","edit")
+    edit.setAttribute("id",product.cod)
+    erase.setAttribute("class","erase")
+    erase.setAttribute("id",product.cod)
+    edit.appendChild(tedit)
+    erase.appendChild(terase)
+    productList.appendChild(elem)
+    productList.appendChild(edit)
+    productList.appendChild(erase)
+  })
+  document.body.appendChild(productList)
+  const editbuttons= document.querySelectorAll(".edit")
+  const erasebuttons= document.querySelectorAll(".erase")
+  editbuttons.forEach(addEvente)
+  function addEvente(element) {
+    element.addEventListener('click', event=>{
+      window.location="http://localhost:3001/products/"+element.id
+    })
+  }
+  erasebuttons.forEach(addEvent)
+  function addEvent(element) {
+    element.addEventListener('click', event=>{
+      //event.preventDefault();
+      fetch("/ara/product/"+element.id, {
+      method: 'DELETE',
+
+    }).then(res => res.json())
+    .then((json) => window.location="http://localhost:3001/products")
+    })
+    }
+  })
+
+
+</script>

@@ -1,0 +1,21 @@
+'use strict'
+
+const express = require("express")
+//const productCtrl = require("../controllers/product")
+const clientCtrl = require("../controllers/client")
+const productCtrl = require('../controllers/product')
+const ara = express.Router()
+//const auth = require("../middlewares/auth")
+ara.get("/client", clientCtrl.getClients)
+ara.get("/client/:clientCed", clientCtrl.getClient)
+ara.post("/client",  clientCtrl.saveClient)
+ara.put("/client/:clientCed",  clientCtrl.updateClient)
+ara.delete("/client/:clientCed", clientCtrl.deleteClient)
+//ara.post("/signup", userCtrl.signUp)
+//ara.post("/signin", userCtrl.signIn)
+ara.get("/product", productCtrl.getProducts)
+ara.get("/product/:cod", productCtrl.getProduct)
+ara.post("/product",  productCtrl.saveProduct)
+ara.put("/product/:cod",  productCtrl.updateProduct)
+ara.delete("/product/:cod", productCtrl.deleteProduct)
+module.exports = ara

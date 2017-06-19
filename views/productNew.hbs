@@ -1,0 +1,28 @@
+<form  method="post">
+
+  <input id="cod" type="text" name="cod" placeholder="Product cod"  required="true">
+  <input id="name"type="text" name="name" placeholder="Product name" required="true">
+  <input id="price"type="text" name="price" placeholder="Product price" required="true">
+  <input id="submit" type="submit"  value="Submit">
+</form>
+<script type="text/javascript">
+const sendbtt = document.querySelector("#submit")
+//const formLogin = document.querySelector('#put')
+//const formData = new FormData(formLogin)
+sendbtt.addEventListener("click", event=>{
+  fetch("/ara/product", {
+  method: 'POST',
+  body: JSON.stringify({
+    cod: parseInt(document.querySelector("#cod").value),
+    name: document.querySelector("#name").value,
+    price: parseInt(document.querySelector("#price").value)
+
+  }),
+  headers:{
+    "Content-Type": "application/json"
+  }
+}).then(res => res.json())
+.then((json) => window.location="http://localhost:3001/products")
+})
+
+</script>
