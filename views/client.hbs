@@ -1,4 +1,9 @@
+<button id="newclient" type="button" name="button">New client</button>
 <script type="text/javascript">
+const pbutton = document.querySelector("#newclient")
+pbutton.addEventListener("click", event =>{
+  window.location="http://localhost:3001/clients/new"
+})
 let clientList = document.createElement('ul')
 //let btt = document.createElement('button')
 //let textb = document.createTextNode("BUY")
@@ -16,13 +21,45 @@ fetch("/ara/client", {
     let space = document.createElement('p')
     let textspace = document.createTextNode("Ced: "+client.ced)
     let elem = document.createElement('li')
+    let tedit = document.createTextNode("Edit")
+    let edit = document.createElement('button')
+    let terase = document.createTextNode("Erase")
+    let erase = document.createElement('button')
+    edit.setAttribute("class","edit")
+    edit.setAttribute("id",client.ced)
+    erase.setAttribute("class","erase")
+    erase.setAttribute("id",client.ced)
+    edit.appendChild(tedit)
+    erase.appendChild(terase)
     space.appendChild(textspace)
     elem.appendChild(name)
   //  document.body.appendChild(space)
     clientList.appendChild(elem)
     clientList.appendChild(space)
+    clientList.appendChild(edit)
+    clientList.appendChild(erase)
   })
   document.body.appendChild(clientList)
+  const editbuttons= document.querySelectorAll(".edit")
+  const erasebuttons= document.querySelectorAll(".erase")
+  editbuttons.forEach(addEvente)
+  function addEvente(element) {
+    element.addEventListener('click', event=>{
+      window.location="http://localhost:3001/clients/"+element.id
+    })
+  }
+  erasebuttons.forEach(addEvent)
+  function addEvent(element) {
+    element.addEventListener('click', event=>{
+      //event.preventDefault();
+      fetch("/ara/client/"+element.id, {
+      method: 'DELETE',
+
+    }).then(res => res.json())
+    .then((json) => window.location="http://localhost:3001/clients")
+    })
+    }
+
   //document.body.insertBefore(clientList, btt)
 
   //console.log(data.client.length);

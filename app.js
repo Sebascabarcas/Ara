@@ -20,7 +20,7 @@ app.use("/ara",ara)
 app.get('/home', (req,res)=>{
   res.render('home')
 })
-app.get('/client', (req,res)=>{
+app.get('/clients', (req,res)=>{
   res.render('client')
 })
 app.get('/products', (req,res)=>{
@@ -29,8 +29,14 @@ app.get('/products', (req,res)=>{
 app.get('/products/new', (req,res)=>{
   res.render('productNew')
 })
+app.get('/clients/new', (req,res)=>{
+  res.render('clientNew')
+})
 app.get('/products/:cod', (req,res)=>{
   res.render('productEdit')
+})
+app.get('/clients/:ced', (req,res)=>{
+  res.render('clientEdit')
 })
 app.get('/bills', (req,res)=>{
   res.render('bill')

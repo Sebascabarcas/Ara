@@ -15,7 +15,8 @@ function getClient(req,res) {
 }
 
 function getClients(req, res) {
-
+   console.log("GET");
+   console.log(req.body);
 		Client.find({}, (err,client)  => {
 			if (err) res.status(500).send(`La petición no pudo ejecutarse: ${err}`)
 			if (!client) res.status(404).send("No se encontró el client")

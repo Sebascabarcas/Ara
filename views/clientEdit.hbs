@@ -1,0 +1,108 @@
+<form id="pedit">
+    <input id="press" type="submit"  value="Press">
+</form>
+<script type="text/javascript">
+  const pedit = document.querySelector("#pedit")
+  const Url = document.baseURI.split("/")
+  const clientCed = Url[4]
+  console.log("aja");
+  //const sendbtt = document.querySelector("#submit")
+  const pressbtt = document.querySelector("#press")
+
+  pressbtt.addEventListener("click", event=>{
+    console.log("Ajaaaa x2");
+    event.preventDefault()
+    fetch("/ara/client/"+clientCed, {
+      method: 'GET',
+
+    }).then(res => res.json())
+    .then(data => {
+      console.log(data.client);
+      let iced = document.createElement("input")
+      let pced = document.createElement("p")
+      let tpced = document.createTextNode("Client Ced")
+      pced.appendChild(tpced)
+      iced.setAttribute("id", "ced")
+      iced.setAttribute("type","text")
+      iced.setAttribute("require","true")
+      iced.setAttribute("value",data.client[0].ced)
+      let iname = document.createElement("input")
+      let pname = document.createElement("p")
+      let tpname = document.createTextNode("Client name")
+      pname.appendChild(tpname)
+      iname.setAttribute("id", "name")
+      iname.setAttribute("type","text")
+      iname.setAttribute("require","true")
+      iname.setAttribute("value",data.client[0].name)
+      let icel = document.createElement("input")
+      let pcel = document.createElement("p")
+      let tcel = document.createTextNode("Client cel")
+      pcel.appendChild(tcel)
+      icel.setAttribute("id", "cel")
+      icel.setAttribute("type","text")
+      icel.setAttribute("require","true")
+      icel.setAttribute("value",data.client[0].cel)
+      let iaddress = document.createElement("input")
+      let paddress = document.createElement("p")
+      let taddress = document.createTextNode("Client address")
+      paddress.appendChild(taddress)
+      iaddress.setAttribute("id", "address")
+      iaddress.setAttribute("type","text")
+      iaddress.setAttribute("require","true")
+      iaddress.setAttribute("value",data.client[0].address)
+      let iemail = document.createElement("input")
+      let pemail = document.createElement("p")
+      let temail = document.createTextNode("Client email")
+      pemail.appendChild(temail)
+      iemail.setAttribute("id", "email")
+      iemail.setAttribute("type","text")
+      iemail.setAttribute("require","true")
+      iemail.setAttribute("value",data.client[0].email)
+      let ipoints = document.createElement("input")
+      let ppoints = document.createElement("p")
+      let tpoints = document.createTextNode("Client points")
+      ppoints.appendChild(tpoints)
+      ipoints.setAttribute("id", "points")
+      ipoints.setAttribute("type","text")
+      ipoints.setAttribute("require","true")
+      ipoints.setAttribute("value",data.client[0].points)
+      let isubmit = document.createElement("input")
+        isubmit.setAttribute("type", "submit")
+        isubmit.setAttribute("value", "Submit")
+        pedit.appendChild(isubmit)
+      pedit.insertBefore(pced,isubmit)
+      pedit.insertBefore(iced,isubmit)
+      pedit.insertBefore(pname,isubmit)
+      pedit.insertBefore(iname,isubmit)
+      pedit.insertBefore(pcel,isubmit)
+      pedit.insertBefore(icel,isubmit)
+      pedit.insertBefore(paddress,isubmit)
+      pedit.insertBefore(iaddress,isubmit)
+      pedit.insertBefore(pemail,isubmit)
+      pedit.insertBefore(iemail,isubmit)
+      pedit.insertBefore(ppoints,isubmit)
+      pedit.insertBefore(ipoints,isubmit)
+      pressbtt.parentNode.removeChild(pressbtt)
+      isubmit.addEventListener("click", event=>{
+          event.preventDefault()
+        fetch("/ara/client/"+ clientCed, {
+          method: 'PUT',
+          body: JSON.stringify({
+            ced: parseInt(document.querySelector("#ced").value),
+            name: document.querySelector("#name").value,
+            email: document.querySelector("#email").value,
+            address: document.querySelector("#address").value,
+            cel:document.querySelector("#cel").value,
+          points: parseInt(document.querySelector("#points").value)
+
+          }),
+          headers:{
+            "Content-Type": "application/json"
+          },
+        }).then(res => res.json())
+        .then((json) => window.location="http://localhost:3001/clients")
+      })
+    })
+
+  })
+</script>

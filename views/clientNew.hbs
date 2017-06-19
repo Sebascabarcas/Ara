@@ -1,0 +1,30 @@
+
+  <input id="ced" type="text" name="ced" placeholder="Client ced"  required="true">
+  <input id="name"type="text" name="name" placeholder="Client name" required="true">
+  <input id="cel"type="text" name="cel" placeholder="Client cel" required="true">
+  <input id="address" type="text" name="address" placeholder="Client address"  required="true">
+  <input id="email"type="text" name="email" placeholder="Client email" required="true">
+  <input id="submit" type="submit"  value="Submit">
+
+<script type="text/javascript">
+const sendbtt = document.querySelector("#submit")
+//const formLogin = document.querySelector('#put')
+//const formData = new FormData(formLogin)
+sendbtt.addEventListener("click", event=>{
+  fetch("/ara/client", {
+  method: 'POST',
+  body: JSON.stringify({
+    ced: parseInt(document.querySelector("#ced").value),
+    name: document.querySelector("#name").value,
+    email: document.querySelector("#email").value,
+    address: document.querySelector("#address").value,
+    cel: document.querySelector("#cel").value
+  }),
+  headers:{
+    "Content-Type": "application/json"
+  }
+}).then(res => res.json())
+.then((json) => window.location="http://localhost:3001/clients")
+})
+
+</script>
