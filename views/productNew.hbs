@@ -1,11 +1,16 @@
-<form  method="post">
+<button id="menu" class="buttons" type="button" name="button">Main menu</button>
 
-  <input id="cod" type="text" name="cod" placeholder="Product cod"  required="true">
-  <input id="name"type="text" name="name" placeholder="Product name" required="true">
-  <input id="price"type="text" name="price" placeholder="Product price" required="true">
+
+  <input id="cod" type="text" name="cod" placeholder="Product cod"  >
+  <input id="name"type="text" name="name" placeholder="Product name" >
+  <input id="price"type="text" name="price" placeholder="Product price" >
   <input id="submit" type="submit"  value="Submit">
-</form>
+
 <script type="text/javascript">
+const menubutton = document.querySelector("#menu")
+menubutton.addEventListener("click", event =>{
+  window.location="http://localhost:3001/home"
+})
 const sendbtt = document.querySelector("#submit")
 //const formLogin = document.querySelector('#put')
 //const formData = new FormData(formLogin)

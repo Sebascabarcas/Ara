@@ -1,5 +1,11 @@
-<button id="newclient" type="button" name="button">New client</button>
+<button id="menu" class="buttons" type="button" name="button">Main menu</button>
+<button id="newclient" type="button"class="buttons"name="button">New client</button>
+<h1>Clients:</h1>
 <script type="text/javascript">
+const menubutton = document.querySelector("#menu")
+menubutton.addEventListener("click", event =>{
+  window.location="http://localhost:3001/home"
+})
 const pbutton = document.querySelector("#newclient")
 pbutton.addEventListener("click", event =>{
   window.location="http://localhost:3001/clients/new"
@@ -23,13 +29,18 @@ fetch("/ara/client", {
     let elem = document.createElement('li')
     let tedit = document.createTextNode("Edit")
     let edit = document.createElement('button')
+    let tbills = document.createTextNode("Bills")
+    let bills = document.createElement('button')
     let terase = document.createTextNode("Erase")
     let erase = document.createElement('button')
     edit.setAttribute("class","edit")
     edit.setAttribute("id",client.ced)
+    bills.setAttribute("class","bills")
+    bills.setAttribute("id",client.ced)
     erase.setAttribute("class","erase")
     erase.setAttribute("id",client.ced)
     edit.appendChild(tedit)
+    bills.appendChild(tbills)
     erase.appendChild(terase)
     space.appendChild(textspace)
     elem.appendChild(name)
@@ -38,14 +49,22 @@ fetch("/ara/client", {
     clientList.appendChild(space)
     clientList.appendChild(edit)
     clientList.appendChild(erase)
+    clientList.appendChild(bills)
   })
   document.body.appendChild(clientList)
   const editbuttons= document.querySelectorAll(".edit")
   const erasebuttons= document.querySelectorAll(".erase")
+  const billbuttons= document.querySelectorAll(".bills")
   editbuttons.forEach(addEvente)
   function addEvente(element) {
     element.addEventListener('click', event=>{
       window.location="http://localhost:3001/clients/"+element.id
+    })
+  }
+  billbuttons.forEach(addEventt)
+  function addEventt(element) {
+    element.addEventListener('click', event=>{
+      window.location="http://localhost:3001/clients/"+element.id+"/bills"
     })
   }
   erasebuttons.forEach(addEvent)

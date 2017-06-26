@@ -1,0 +1,116 @@
+<button id="menu" class="buttons" type="button" name="button">Main menu</button>
+<h1>Bills:</h1>
+<script type="text/javascript">
+const menubutton = document.querySelector("#menu")
+menubutton.addEventListener("click", event =>{
+  window.location="http://localhost:3001/home"
+})
+let billList = document.createElement('ul')
+//let btt = document.createElement('button')
+//let textb = document.createTextNode("BUY")
+//btt.setAttribute("id","bton")
+//btt.appendChild(textb)
+fetch("/ara/bill", {
+  method: 'GET'
+
+}).then(res => res.json())
+.then(data => {
+  console.log(data.bill);
+  //localStorage.setItem("bills",allbills)
+  data.bill.map(bill =>{
+    //let name = document.createTextNode(bill.name)
+    let space = document.createElement('p')
+    let textspace = document.createTextNode("Ced: "+bill.client)
+    let id = document.createElement('h4')
+    let textid = document.createTextNode("Id: "+bill.id)
+    let spacedate = document.createElement('p')
+    let textdate = document.createTextNode("Date: "+bill.date)
+    let spacetotal = document.createElement('p')
+    let texttotal = document.createTextNode("Value: $"+bill.totalvalue)
+    let elem = document.createElement('li')
+    let tedit = document.createTextNode("Edit")
+    let edit = document.createElement('button')
+    let terase = document.createTextNode("Erase")
+    let erase = document.createElement('button')
+    let spacechanges = document.createElement('p')
+    let textchanges = document.createTextNode("Changes: ")
+    spacechanges.appendChild(textchanges)
+    edit.setAttribute("class","edit")
+    edit.setAttribute("id",bill.id)
+    erase.setAttribute("class","erase")
+    erase.setAttribute("id",bill.id)
+    edit.appendChild(tedit)
+    erase.appendChild(terase)
+    space.appendChild(textspace)
+    id.appendChild(textid)
+    spacedate.appendChild(textdate)
+    spacetotal.appendChild(texttotal)
+  //  document.body.appendChild(space)
+    billList.appendChild(id)
+    billList.appendChild(spacedate)
+    billList.appendChild(space)
+    for (var i = 0; i < bill.products.length; i++) {
+
+      let spaceproduct = document.createElement('p')
+      let textproduct = document.createTextNode("Product: "+bill.products[i].name)
+      let spacecant = document.createElement('p')
+      let textcant = document.createTextNode("x"+bill.cantproducts[i])
+      spaceproduct.appendChild(textproduct)
+      spacecant.appendChild(textcant)
+      billList.appendChild(spaceproduct)
+      billList.appendChild(spacecant)
+    }
+    billList.appendChild(spacechanges)
+    if (bill.changes.length != 0) {
+      for (var i = 0; i < bill.changes.length; i++) {
+        let pchanges = document.createElement("p")
+        let textpchanges = document.createTextNode(bill.changes[i])
+        pchanges.appendChild(textpchanges)
+        billList.appendChild(pchanges)
+      }
+    }else {
+      let pchanges = document.createElement("p")
+      let textpchanges = document.createTextNode("None")
+      pchanges.appendChild(textpchanges)
+      billList.appendChild(pchanges)
+    }
+    billList.appendChild(spacetotal)
+    billList.appendChild(edit)
+    billList.appendChild(erase)
+  })
+  document.body.appendChild(billList)
+  const editbuttons= document.querySelectorAll(".edit")
+  const erasebuttons= document.querySelectorAll(".erase")
+  editbuttons.forEach(addEvente)
+  function addEvente(element) {
+    element.addEventListener('click', event=>{
+      window.location="http://localhost:3001/bills/"+element.id
+    })
+  }
+  erasebuttons.forEach(addEvent)
+  function addEvent(element) {
+    element.addEventListener('click', event=>{
+      //event.preventDefault();
+      fetch("/ara/bill/"+element.id, {
+      method: 'DELETE',
+
+    }).then(res => res.json())
+    .then((json) => window.location="http://localhost:3001/bills")
+    
+    })
+    }
+
+  //document.body.insertBefore(billList, btt)
+
+  //console.log(data.bill.length);
+/*  const List = document.getElementById("list")
+  console.log(List.length)
+  console.log(List.childNodes[0])
+  for (var i = List.length-1; i >= 0; i--) {
+    let space = document.createElement('input')
+    space.setAttribute("type","value")
+    space.setAttribute("value", "¿How many?")
+    List.insertBefore(space,List.childNodes[i])
+  }*/
+})
+</script>

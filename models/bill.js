@@ -6,10 +6,13 @@ const Product = require("../models/product")
 
 
 const BillSchema = new Schema({
- client: {type: Number}
- products: [Product],
+ id: {type:Number, unique: true},
+ client: {type: Number},
+ products: [{}],
+ cantproducts: [{}],
+ changes:[{}],
  date: { type: Date, default: Date.now},
- value: { type: Number, required: true}
+ totalvalue: { type: Number, required: true}
 })
 
 module.exports = mongoose.model("BillSchema", BillSchema)

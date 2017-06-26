@@ -1,4 +1,4 @@
-
+<button id="menu" class="buttons" type="button" name="button">Main menu</button>
   <input id="ced" type="text" name="ced" placeholder="Client ced"  required="true">
   <input id="name"type="text" name="name" placeholder="Client name" required="true">
   <input id="cel"type="text" name="cel" placeholder="Client cel" required="true">
@@ -7,6 +7,10 @@
   <input id="submit" type="submit"  value="Submit">
 
 <script type="text/javascript">
+const menubutton = document.querySelector("#menu")
+menubutton.addEventListener("click", event =>{
+  window.location="http://localhost:3001/home"
+})
 const sendbtt = document.querySelector("#submit")
 //const formLogin = document.querySelector('#put')
 //const formData = new FormData(formLogin)
@@ -24,7 +28,7 @@ sendbtt.addEventListener("click", event=>{
     "Content-Type": "application/json"
   }
 }).then(res => res.json())
-.then((json) => window.location="http://localhost:3001/clients")
+.then((json) =>window.location="http://localhost:3001/clients")
 })
 
 </script>

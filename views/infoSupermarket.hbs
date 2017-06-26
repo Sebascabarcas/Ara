@@ -1,0 +1,52 @@
+<button id="menu" class="buttons" type="button" name="button">Main menu</button>
+<h1>Info Supermarket:</h1>
+
+
+<script type="text/javascript">
+const menubutton = document.querySelector("#menu")
+menubutton.addEventListener("click", event =>{
+  window.location="http://localhost:3001/home"
+})
+fetch("/ara/client", {
+  method: 'GET'
+
+}).then(res => res.json())
+.then(data => {
+
+  let textspace = document.createTextNode("Number of clients: "+data.client.length)
+  let elem = document.createElement('h4')
+  elem.appendChild(textspace)
+  document.body.appendChild(elem)
+})
+fetch("/ara/product", {
+  method: 'GET'
+
+}).then(res => res.json())
+.then(data => {
+
+  let textspace = document.createTextNode("Number of products: "+data.product.length)
+  let elem = document.createElement('h4')
+  elem.appendChild(textspace)
+  document.body.appendChild(elem)
+})
+fetch("/ara/bill", {
+  method: 'GET'
+
+}).then(res => res.json())
+.then(data => {
+
+  let textspace = document.createTextNode("Number of bill: "+data.bill.length)
+  let elem = document.createElement('h4')
+  elem.appendChild(textspace)
+  document.body.appendChild(elem)
+  var totalv =0
+  for (var i = 0; i < data.bill.length; i++) {
+    totalv = data.bill[i].totalvalue + totalv
+  }
+  let text = document.createTextNode("Total money: $"+totalv)
+  let header = document.createElement('h4')
+  header.appendChild(text)
+  document.body.appendChild(header)
+})
+
+</script>

@@ -32,16 +32,40 @@ app.get('/products/new', (req,res)=>{
 app.get('/clients/new', (req,res)=>{
   res.render('clientNew')
 })
+app.get('/find', (req,res)=>{
+  res.render('findUser')
+})
 app.get('/products/:cod', (req,res)=>{
   res.render('productEdit')
 })
 app.get('/clients/:ced', (req,res)=>{
   res.render('clientEdit')
 })
+app.get('/clients/:ced/bills', (req,res)=>{
+  res.render('billUser')
+})
+app.get('/clients/:ced/bills/:id', (req,res)=>{
+  res.render('billUserBillEdit')
+})
 app.get('/bills', (req,res)=>{
   res.render('bill')
 })
-app.get('/shop', (req,res)=>{
+app.get('/bills/:id', (req,res)=>{
+  res.render('billEdit')
+})
+app.get('/shop/:client', (req,res)=>{
   res.render('shop')
+})
+app.get('/info', (req,res)=>{
+  res.render('info')
+})
+app.get('/info/prizes', (req,res)=>{
+  res.render('clientPrizes')
+})
+app.get('/info/million', (req,res)=>{
+  res.render('clientMillion')
+})
+app.get('/info/supermarket', (req,res)=>{
+  res.render('infoSupermarket')
 })
 module.exports = app

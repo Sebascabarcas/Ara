@@ -1,4 +1,12 @@
+<button id="menu" class="buttons" type="button" name="button">Main menu</button>
+<h1>Products:</h1>
 <script type="text/javascript">
+const menubutton = document.querySelector("#menu")
+menubutton.addEventListener("click", event =>{
+  window.location="http://localhost:3001/home"
+})
+const Url = document.baseURI.split("/")
+const clientCed = Url[4]
 let productList = document.createElement('ul')
 let btt = document.createElement('button')
 let textb = document.createTextNode("BUY")
@@ -9,21 +17,28 @@ fetch("/ara/product", {
 
 }).then(res => res.json())
 .then(data => {
-
-  console.log(data.product);
+  console.log("ola");
+  //console.log(data.product);
   //localStorage.setItem("products",allproducts)
   data.product.map(product =>{
     let name = document.createTextNode(product.name)
-    let elem = document.createElement('li')
+    let elem = document.createElement('label')
+    let br = document.createElement('br')
     let space = document.createElement('input')
+    let checkbox = document.createElement('input')
     space.setAttribute("type","value")
+    checkbox.setAttribute("type","checkbox")
     space.setAttribute("placeHolder", "¿How many?")
   //  space.setAttribute("value", "0")
-    space.setAttribute("id",""+product.name)
+    checkbox.setAttribute("id","cod"+product.cod)
+    space.setAttribute("id","c"+product.cod)
+    elem.appendChild(checkbox)
     elem.appendChild(name)
   //  document.body.appendChild(space)
     productList.appendChild(elem)
+    //productList.appendChild(checkbox)
     productList.appendChild(space)
+    productList.appendChild(br)
   })
   document.body.insertBefore(productList, btt)
 
@@ -45,28 +60,82 @@ document.querySelector("#bton").addEventListener("click", event=>{
 
   }).then(res => res.json())
   .then(data => {
-    const verif = false
+    //const verif = false
     const allproducts=data.product
+    console.log(allproducts)
+    console.log(document.querySelector("#cod"+allproducts[0].cod).checked)
     const totalp = new Array()
+    const products = new Array()
+    var totalvalue = 0
     //const val =document.querySelector("#"+allproducts[0].name).value
   //  const totalp = 0
     //console.log(typeof totalp);
 
     for (var i = 0; i < allproducts.length; i++) {
-      const val =document.querySelector("#"+allproducts[i].name).value
-      if (!val) {
-        totalp.push(0)
+      const verif =document.querySelector("#cod"+allproducts[i].cod).checked
+      const val =document.querySelector("#c"+allproducts[i].cod).value
+      if (verif) {
+        totalp.push(parseInt(val))
+        products.push(allproducts[i])
+         totalvalue = (val*allproducts[i].price) + totalvalue
+      }
 
-      }else{
-       totalp.push(parseInt(val))}
+
+
     // if (document.querySelector("#"+allproducts[i].name)) {
     //   totalp =parseInt(document.querySelector("#"+allproducts[i].name).value)
 
     // }
     }
     console.log(totalp);
-  })
-})
+    console.log(products);
+    console.log(totalvalue);
+    var confirmp = confirm("$"+totalvalue+", ¿Will you buy it?")
+    if (confirmp) {
+      fetch("/ara/client/"+ clientCed, {
+        method: 'PUT',
+        body: JSON.stringify({
+
+        points: (totalvalue/100)
+
+        }),
+        headers:{
+          "Content-Type": "application/json"
+        },
+      }).then(res => res.json())
+      .then((json) =>
+      fetch("/ara/bill/",{
+        method: 'GET'
+      }).then(res => res.json())
+      .then(data =>
+
+        fetch("/ara/bill/", {
+          method: 'POST',
+          body: JSON.stringify({
+            id: ((data.bill.length)+1),
+            client: parseInt(clientCed),
+            products: products,
+            cantproducts: totalp,
+            totalvalue: totalvalue,
+
+          }),
+          headers:{
+            "Content-Type": "application/json"
+          },
+        }).then(res => res.json())
+        .then((json) =>
+        window.location="http://localhost:3001/bills"
+      )
+      )
+    )}else{
+
+    }
+  }
+)
+    })
+
+
+
 
 //console.log(allproducts.length)
 </script>

@@ -1,0 +1,154 @@
+<button id="menu" class="buttons" type="button" name="button">Main menu</button>
+<form id="pedit">
+    <input id="press" type="submit"  value="Press">
+</form>
+<script type="text/javascript">
+const menubutton = document.querySelector("#menu")
+menubutton.addEventListener("click", event =>{
+  window.location="http://localhost:3001/home"
+})
+  const pedit = document.querySelector("#pedit")
+  const Url = document.baseURI.split("/")
+  const billId = Url[4]
+
+  //const sendbtt = document.querySelector("#submit")
+  const pressbtt = document.querySelector("#press")
+
+  pressbtt.addEventListener("click", event=>{
+    event.preventDefault()
+    fetch("/ara/bill/"+billId, {
+      method: 'GET',
+
+    }).then(res => res.json())
+    .then(data => {
+      console.log(data);
+      console.log(data.bill[0]);
+      let pd = document.createElement("h4")
+      let tpd = document.createTextNode("Bill id: "+data.bill[0].id)
+      pd.appendChild(tpd)
+      //let id = document.createElement("p")
+      //let pid = document.createTextNode(data.bill[0].id)
+      //id.appendChild(pid)
+      //console.log(data.product[0].ced);
+  //    let iced = document.createElement("p")
+    //  let piced = document.createTextNode(data.bill[0].client)
+      let pced = document.createElement("h4")
+      let tpced = document.createTextNode("Bill Ced: "+data.bill[0].client)
+      pced.appendChild(tpced)
+      //iced.setAttribute("id", "ced")
+      //iced.setAttribute("type","text")
+      //iced.setAttribute("require","true")
+      //iced.appendChild(piced)
+      //let ivalue = document.createElement("input")
+      //let pvalue = document.createElement("p")
+      //let tvalue = document.createTextNode("Bill value: $"+data.bill[0].totalvalue)
+      //pvalue.appendChild(tvalue)
+      //ivalue.setAttribute("id", "value")
+      //ivalue.setAttribute("type","text")
+      //ivalue.setAttribute("require","true")
+      //ivalue.setAttribute("value",data.bill[0].totalvalue)
+      let isubmit = document.createElement("input")
+        isubmit.setAttribute("type", "submit")
+        isubmit.setAttribute("value", "Submit")
+        pedit.appendChild(isubmit)
+        pedit.insertBefore(pd,isubmit)
+        //pedit.insertBefore(pid,isubmit)
+        //pedit.insertBefore(id,isubmit)
+        pedit.insertBefore(pced,isubmit)
+      //  pedit.insertBefore(iced,isubmit)
+        let pproducts = document.createElement("h4")
+        let tpproducts = document.createTextNode("Bill products:")
+        pedit.insertBefore(pproducts,isubmit)
+        for (var i = 0; i < data.bill[0].products.length; i++) {
+          let label = document.createElement("label")
+          let br = document.createElement("br")
+          let labeltext = document.createTextNode("Product: "+data.bill[0].products[i].name)
+          let checkbox = document.createElement("input")
+          let iproducts = document.createElement("input")
+          pproducts.appendChild(tpproducts)
+          checkbox.setAttribute("type", "checkbox")
+          checkbox.setAttribute("checked", "")
+          checkbox.setAttribute("id", "cod"+data.bill[0].products[i].cod)
+          label.appendChild(checkbox)
+          label.appendChild(labeltext)
+        //  checkbox.appendChild(label)
+          iproducts.setAttribute("id", "c"+data.bill[0].products[i].cod)
+          iproducts.setAttribute("type","text")
+          iproducts.setAttribute("require","true")
+          iproducts.setAttribute("value",data.bill[0].cantproducts[i])
+          pedit.insertBefore(label,isubmit)
+          pedit.insertBefore(iproducts,isubmit)
+          pedit.insertBefore(br,isubmit)
+        }
+      //pedit.insertBefore(pvalue,isubmit)
+    //  pedit.insertBefore(iprice,isubmit)
+      pressbtt.parentNode.removeChild(pressbtt)
+      isubmit.addEventListener("click", event=>{
+          event.preventDefault()
+          const products = new Array()
+          const totalp = new Array()
+          const changes = data.bill[0].changes
+          var totalvalue =0
+          for (var i = 0; i < data.bill[0].products.length; i++) {
+            if (document.querySelector("#cod"+data.bill[0].products[i].cod).checked) {
+              console.log("Aqui");
+              if(document.querySelector("#c"+data.bill[0].products[i].cod).value > data.bill[0].cantproducts[i]) {
+                let now = parseInt(document.querySelector("#c"+data.bill[0].products[i].cod).value) - parseInt(data.bill[0].cantproducts[i])
+                  changes.push(now+ "- "+ data.bill[0].products[i].name+" has been added")
+              }else{
+                if (document.querySelector("#c"+data.bill[0].products[i].cod).value == data.bill[0].cantproducts[i]) {
+
+                }else{
+                  let now = parseInt(data.bill[0].cantproducts[i]) - parseInt(document.querySelector("#c"+data.bill[0].products[i].cod).value)
+                  changes.push(now+ "- "+ data.bill[0].products[i].name+" has been eliminated")
+                }
+              }
+              products.push(data.bill[0].products[i])
+              totalp.push(document.querySelector("#c"+data.bill[0].products[i].cod).value)
+              totalvalue = (((data.bill[0].products[i].price)*parseInt(document.querySelector("#c"+data.bill[0].products[i].cod).value))+ totalvalue)
+            }else{
+              console.log("AQUIX2");
+              changes.push(data.bill[0].cantproducts[i]+ "- "+ data.bill[0].products[i].name+" has been eliminated")
+            }
+          }
+        fetch("/ara/bill/"+ data.bill[0].id, {
+          method: 'PUT',
+          body: JSON.stringify({
+            id:data.bill[0].id,
+            client: data.bill[0].client,
+            products: products,
+            cantproducts: totalp,
+            changes: changes,
+            totalvalue: totalvalue
+
+          }),
+          headers:{
+            "Content-Type": "application/json"
+          },
+        }).then(res => res.json())
+        .then((json) => window.location="http://localhost:3001/bills")
+      })
+    })
+
+  })
+  //const formLogin = document.querySelector('#put')
+  //const formData = new FormData(formLogin)
+  /*sendbtt.addEventListener("click", event=>{
+      event.preventDefault()
+    fetch("/ara/product/"+ billId, {
+      method: 'PUT',
+      body: JSON.stringify({
+        ced: parseInt(document.querySelector("#ced").value),
+        products: document.querySelector("#products").value,
+        price: parseInt(document.querySelector("#price").value)
+
+      }),
+      headers:{
+        "Content-Type": "application/json"
+      },
+    }).then(res => res.json())
+    .then((json) => window.location="http://localhost:3001/products")
+  })*/
+
+
+</script>

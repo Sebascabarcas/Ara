@@ -1,0 +1,32 @@
+<button id="menu" class="buttons" type="button" name="button">Main menu</button>
+<br></br>
+ <input class="buttons" type="button" name="prizes" value="Clients for prizes">
+ <br></br>
+ <input class="buttons" type="button" name="million"  value="1 million clients">
+ <br></br>
+ <input class="buttons"  type="button" name="supermarket" value="Info supermarket">
+ <br></br>
+
+<script type="text/javascript">
+const buttons =document.querySelectorAll('.buttons')
+console.log(buttons)
+buttons.forEach(addEvent)
+function addEvent(element) {
+  element.addEventListener('click', event=>{
+    window.location="http://localhost:3001/info/"+element.name
+  })
+}
+const menubutton = document.querySelector("#menu")
+menubutton.addEventListener("click", event =>{
+  window.location="http://localhost:3001/home"
+})
+/*
+for (var i = 0; i < buttons.length; i++) {
+   const dir= buttons[i].name
+  buttons[i].addEventListener('click', event=>{
+   console.log(dir)
+    window.location="http://localhost:3001/"+dir
+  })*/
+
+
+</script>

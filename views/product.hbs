@@ -1,5 +1,11 @@
-<button id="newproduct" type="button" name="button">New product</button>
+<button id="menu" class="buttons" type="button" name="button">Main menu</button>
+<button id="newproduct" type="button" class="buttons" name="button">New product</button>
+<h1>Products:</h1>
 <script type="text/javascript">
+const menubutton = document.querySelector("#menu")
+menubutton.addEventListener("click", event =>{
+  window.location="http://localhost:3001/home"
+})
 const pbutton = document.querySelector("#newproduct")
 pbutton.addEventListener("click", event =>{
   window.location="http://localhost:3001/products/new"

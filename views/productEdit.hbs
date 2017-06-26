@@ -1,7 +1,12 @@
+<button id="menu" class="buttons" type="button" name="button">Main menu</button>
 <form id="pedit">
     <input id="press" type="submit"  value="Press">
 </form>
 <script type="text/javascript">
+const menubutton = document.querySelector("#menu")
+menubutton.addEventListener("click", event =>{
+  window.location="http://localhost:3001/home"
+})
   const pedit = document.querySelector("#pedit")
   const Url = document.baseURI.split("/")
   const productCod = Url[4]

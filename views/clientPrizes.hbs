@@ -1,0 +1,38 @@
+<button id="menu" class="buttons" type="button" name="button">Main menu</button>
+<h3>Clients for prizes:</h3>
+
+<script type="text/javascript">
+const menubutton = document.querySelector("#menu")
+menubutton.addEventListener("click", event =>{
+  window.location="http://localhost:3001/home"
+})
+let clientList = document.createElement('ul')
+//let btt = document.createElement('button')
+//let textb = document.createTextNode("BUY")
+//btt.setAttribute("id","bton")
+//btt.appendChild(textb)
+fetch("/ara/client", {
+  method: 'GET'
+
+}).then(res => res.json())
+.then(data => {
+  console.log(data.client);
+  data.client.map(client =>{
+    if (client.points >= 100000) {
+      let name = document.createTextNode(client.name)
+      let space = document.createElement('p')
+      let textspace = document.createTextNode("Ced: "+client.ced)
+      let elem = document.createElement('li')
+      space.appendChild(textspace)
+      elem.appendChild(name)
+      clientList.appendChild(elem)
+      clientList.appendChild(space)
+    }
+
+    document.body.appendChild(clientList)
+  })
+
+
+
+})
+</script>
