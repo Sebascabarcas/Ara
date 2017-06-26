@@ -97,12 +97,34 @@ fetch("/ara/bill", {
     erasebuttons.forEach(addEvent)
     function addEvent(element) {
       element.addEventListener('click', event=>{
-        //event.preventDefault();
-        fetch("/ara/bill/"+element.id, {
-          method: 'DELETE',
-
+        fetch("/ara/bill/"+element.id,{
+          method: 'GET',
         }).then(res => res.json())
-        .then((json) => window.location="http://localhost:3001/bills")
+        .then(datad =>
+          // point = (data.bill[0].totalvalue)/100
+          fetch("/ara/client/"+datad.bill[0].client,{
+            method: 'GET',
+          }).then(res => res.json())
+          .then(data =>
+            fetch("/ara/client/"+ data.client[0].ced, {
+              method: 'PUT',
+              body: JSON.stringify({
+              points: data.client[0].points - (datad.bill[0].totalvalue/100)
+              }),
+              headers:{
+                "Content-Type": "application/json"
+              },
+            }).then(res => res.json())
+            .then((json) =>
+
+            fetch("/ara/bill/"+element.id, {
+              method: 'DELETE',
+
+            }).then(res => res.json())
+            .then(data => window.location="http://localhost:3001/"+data.client[0].ced+"/bills")
+          )
+          )
+        )
       })
     }
 

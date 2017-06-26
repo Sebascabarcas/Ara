@@ -88,6 +88,9 @@ menubutton.addEventListener("click", event =>{
           const products = new Array()
           const totalp = new Array()
           const changes = data.bill[0].changes
+          const client = data.bill[0].client
+          const totalbeforevalue = data.bill[0].totalvalue
+
           var totalvalue =0
           for (var i = 0; i < data.bill[0].products.length; i++) {
             if (document.querySelector("#cod"+data.bill[0].products[i].cod).checked) {
@@ -109,6 +112,70 @@ menubutton.addEventListener("click", event =>{
             }else{
               console.log("AQUIX2");
               changes.push(data.bill[0].cantproducts[i]+ "- "+ data.bill[0].products[i].name+" has been eliminated")
+            }
+          }
+          if (totalbeforevalue > totalvalue) {
+            fetch("/ara/client/"+client, {
+              method: 'GET',
+
+            }).then(res => res.json())
+            .then(data => {
+            const pointsbefore = data.client[0].points
+            const points = (totalbeforevalue - totalvalue)/100
+            fetch("/ara/client/"+ client, {
+              method: 'PUT',
+              body: JSON.stringify({
+              points: pointsbefore - points
+              }),
+              headers:{
+                "Content-Type": "application/json"
+              },
+            }).then(res => res.json())
+            .then((json) =>console.log("good"))
+          })
+
+          }else {
+            if (totalbeforevalue < totalvalue) {
+              fetch("/ara/client/"+client, {
+                method: 'GET',
+
+              }).then(res => res.json())
+              .then(data => {
+              const pointsbefore = data.client[0].points
+              const points = (totalvalue - totalbeforevalue)/100
+              fetch("/ara/client/"+ client, {
+                method: 'PUT',
+                body: JSON.stringify({
+                points: pointsbefore + points
+                }),
+                headers:{
+                  "Content-Type": "application/json"
+                },
+              }).then(res => res.json())
+              .then((json) => console.log("good"))
+            })
+
+            }else {
+              if (totalvalue == 0) {
+                fetch("/ara/client/"+client, {
+                  method: 'GET',
+
+                }).then(res => res.json())
+                .then(data => {
+                const pointsbefore = data.client[0].points
+                const points = totalbeforevalue/100
+                fetch("/ara/client/"+ client, {
+                  method: 'PUT',
+                  body: JSON.stringify({
+                  points: pointsbefore - points
+                  }),
+                  headers:{
+                    "Content-Type": "application/json"
+                  },
+                }).then(res => res.json())
+                .then((json) => console.log("good"))
+              })
+              }
             }
           }
         fetch("/ara/bill/"+ data.bill[0].id, {
